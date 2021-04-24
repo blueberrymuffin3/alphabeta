@@ -51,9 +51,7 @@ func selectMove(ruleset rules.Ruleset, state *rules.BoardState, depth int) (best
 			_, score = selectMove(ruleset, newState, depth-1)
 		}
 
-		if score != SCORE_DIE {
-			score += SCORE_SURVIVE
-		}
+		score += SCORE_SURVIVE
 
 		if score > bestMoveScore {
 			bestMove = move
