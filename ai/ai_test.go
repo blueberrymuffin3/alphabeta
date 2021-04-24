@@ -3,20 +3,18 @@ package ai
 import (
 	"testing"
 
-	battlesnake "github.com/BattlesnakeOfficial/rules/cli/commands"
+	"github.com/bmxguy100/battlesnakes_alphabeta/lib"
 	log "github.com/sirupsen/logrus"
 )
 
-var you = battlesnake.SnakeResponse{
-	Id:      "gs_cSGkVSbqhcdVjBVXXgh9kWY3",
-	Name:    "blueberry-hackvh",
-	Health:  99,
-	Shout:   "",
-	Squad:   "",
-	Latency: 58,
-	Head:    battlesnake.Coord{X: 6, Y: 1},
-	Length:  23,
-	Body: []battlesnake.Coord{
+var you = lib.Battlesnake{
+	ID:     "gs_cSGkVSbqhcdVjBVXXgh9kWY3",
+	Name:   "blueberry-hackvh",
+	Health: 99,
+	Shout:  "",
+	Head:   lib.Coord{X: 6, Y: 1},
+	Length: 23,
+	Body: []lib.Coord{
 		{X: 6, Y: 1},
 		{X: 7, Y: 1},
 		{X: 8, Y: 1},
@@ -43,17 +41,17 @@ var you = battlesnake.SnakeResponse{
 	},
 }
 
-var request = battlesnake.ResponsePayload{
+var request = lib.GameRequest{
 	Turn: 317,
-	Game: battlesnake.GameResponse{
-		Id:      "sample",
+	Game: lib.Game{
+		ID:      "sample",
 		Timeout: 500,
 	},
-	Board: battlesnake.BoardResponse{
+	Board: lib.Board{
 		Width:  11,
 		Height: 11,
-		Snakes: []battlesnake.SnakeResponse{you},
-		Food: []battlesnake.Coord{
+		Snakes: []lib.Battlesnake{you},
+		Food: []lib.Coord{
 			{X: 10, Y: 2},
 			{X: 10, Y: 7},
 			{X: 0, Y: 3},
@@ -89,7 +87,6 @@ var request = battlesnake.ResponsePayload{
 			{X: 10, Y: 9},
 			{X: 0, Y: 7},
 		},
-		Hazards: []battlesnake.Coord{},
 	},
 	You: you,
 }
