@@ -10,4 +10,4 @@ build:
 deploy:
   kustomize:
     paths:
-    - battlesnakes
+    - kubernetes

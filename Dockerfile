@@ -8,7 +8,7 @@ RUN go mod download
 COPY . .
 RUN go build -o alphabeta
 
-FROM scratch
+FROM alpine:3
 COPY --from=build /app/alphabeta /alphabeta
 
 CMD [ "/alphabeta" ]
