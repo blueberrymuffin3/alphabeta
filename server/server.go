@@ -83,6 +83,10 @@ func handleEnd(w http.ResponseWriter, r *http.Request) {
 	log.Info("END\n")
 }
 
+func handleHealthZ(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "OK")
+}
+
 func StartServer(host string, port int64) {
 	address := fmt.Sprintf("%s:%d", host, port)
 
@@ -90,6 +94,7 @@ func StartServer(host string, port int64) {
 	http.HandleFunc("/start", handleStart)
 	http.HandleFunc("/move", handleMove)
 	http.HandleFunc("/end", handleEnd)
+	http.HandleFunc("/healthz", handleHealthZ)
 
 	log.WithField("port", port).Info("Starting Battlesnake Server")
 	log.Fatal(http.ListenAndServe(address, nil))
