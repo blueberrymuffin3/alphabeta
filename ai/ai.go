@@ -1,8 +1,10 @@
 package ai
 
 import (
+	"time"
+
 	"github.com/BattlesnakeOfficial/rules"
-	api "github.com/BattlesnakeOfficial/rules/cli/commands"
+	"github.com/bmxguy100/battlesnakes_alphabeta/lib"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -13,22 +15,53 @@ const (
 	YOU
 )
 
+const (
+	SCORE_DIE     = -100_000.0
+	SCORE_SURVIVE = 10.0
+	SCORE_HEALTH  = 1.0
+)
+
 var moves = [...]string{"up", "right", "down", "left"}
 
-func SelectMove(request api.ResponsePayload) string {
+func SelectMove(request lib.GameRequest) (bestMove string) {
 	ruleset, state := createSimulation(request)
 
-	bestMove := moves[0]
-	bestMoveScore := evaluate(iterate(ruleset, state, moves[0]))
+	start := time.Now()
+	bestMove, bestMoveScore := selectMove(ruleset, state, 10)
+	runtime := time.Since(start)
 
-	for _, move := range moves[1:] {
-		score := evaluate(iterate(ruleset, state, move))
+	log.WithField("move", bestMove).
+		WithField("score", bestMoveScore).
+		WithField("runtime", runtime).
+		Info("Chose a move")
+
+	return
+}
+
+func selectMove(ruleset rules.Ruleset, state *rules.BoardState, depth int) (bestMove string, bestMoveScore float32) {
+	bestMoveScore = 1e-100
+
+	for _, move := range moves {
+		var score float32
+		newState := iterate(ruleset, state, move)
+
+		score = evaluate(newState)
+
+		if score != SCORE_DIE && depth > 1 {
+			_, score = selectMove(ruleset, newState, depth-1)
+		}
+
+		if score != SCORE_DIE {
+			score += SCORE_SURVIVE
+		}
+
 		if score > bestMoveScore {
 			bestMove = move
+			bestMoveScore = score
 		}
 	}
 
-	return bestMove
+	return
 }
 
 func iterate(ruleset rules.Ruleset, state *rules.BoardState, move string) *rules.BoardState {
@@ -52,11 +85,10 @@ func evaluate(state *rules.BoardState) (score float32) {
 	score = 0.0
 
 	if snake.EliminatedCause != "" {
-		score = -1e10
-		return
+		return SCORE_DIE
 	}
 
-	score += float32(snake.Health)
+	score += float32(snake.Health) * SCORE_HEALTH
 
 	return
 }

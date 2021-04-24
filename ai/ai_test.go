@@ -95,8 +95,10 @@ var request = battlesnake.ResponsePayload{
 }
 
 func BenchmarkSelectMove(b *testing.B) {
+	SelectMove(request)
+
 	log.SetLevel(log.FatalLevel)
-	for i := 0; i < b.N; i++ {
+	for i := 0; i < b.N-1; i++ {
 		SelectMove(request)
 	}
 	log.SetLevel(log.InfoLevel)
@@ -104,7 +106,7 @@ func BenchmarkSelectMove(b *testing.B) {
 
 func BenchmarkEvaluate(b *testing.B) {
 	_, state := createSimulation(request)
-	
+
 	log.SetLevel(log.FatalLevel)
 	for i := 0; i < b.N; i++ {
 		evaluate(state)

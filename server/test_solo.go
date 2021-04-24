@@ -5,10 +5,11 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
-	"testing"
+
+	log "github.com/sirupsen/logrus"
 )
 
-func TestSolo(t *testing.T) {
+func TestSolo() {
 	port := rand.Intn(44150) + 5001
 	url := fmt.Sprintf("http://localhost:%d", port)
 
@@ -20,6 +21,6 @@ func TestSolo(t *testing.T) {
 	err := cmd.Run()
 
 	if err != nil {
-		t.Error(err)
+		log.Fatal(err)
 	}
 }

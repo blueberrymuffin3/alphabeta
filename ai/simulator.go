@@ -2,10 +2,10 @@ package ai
 
 import (
 	"github.com/BattlesnakeOfficial/rules"
-	api "github.com/BattlesnakeOfficial/rules/cli/commands"
+	"github.com/bmxguy100/battlesnakes_alphabeta/lib"
 )
 
-func createSimulation(request api.ResponsePayload) (rules.Ruleset, *rules.BoardState) {
+func createSimulation(request lib.GameRequest) (rules.Ruleset, *rules.BoardState) {
 	// TODO: Non-solo games
 	ruleset := rules.SoloRuleset{
 		StandardRuleset: rules.StandardRuleset{
@@ -30,7 +30,7 @@ func createSimulation(request api.ResponsePayload) (rules.Ruleset, *rules.BoardS
 
 	for _, apiSnake := range request.Board.Snakes {
 		snake := rules.Snake{
-			ID:     apiSnake.Id,
+			ID:     apiSnake.ID,
 			Health: apiSnake.Health,
 		}
 
