@@ -1,0 +1,13 @@
+apiVersion: skaffold/v2beta11
+kind: Config
+metadata:
+  name: alphabeta-go
+build:
+  artifacts:
+  - image: ghcr.io/bmxguy100/alphabeta
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kustomize:
+    paths:
+    - battlesnakes
